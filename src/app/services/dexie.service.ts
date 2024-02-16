@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
+import * as CryptoJS from 'crypto-js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,8 @@ import Dexie from 'dexie';
 export class DexieService {
 
   private db!: Dexie;
+  private key: string = '070997'
+  private isProduction: boolean = true;
 
   constructor() {
     this.initDatabase();
@@ -55,6 +59,48 @@ export class DexieService {
   async deleteUser(userId: number) {
     await this.db.table('users').delete(userId);
   }
+
+  /**
+   * Encrypts data
+   * @param data
+   * @returns data
+   */
+  private encryptData(data: any): string {
+    const jsonString = JSON.stringify(data);
+    const encrypted = CryptoJS.AES.encrypt(jsonString, this.key).toString();
+    return encrypted;
+  }
+
+  /**
+   * Decrypts data
+   * @param encryptedData
+   * @returns data
+   */
+  private decryptData(encryptedData: string): any {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, this.key);
+    const decryptedString = bytes.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decryptedString);
+  }
+
+  /**
+   * Stores data
+   * @param data
+   */
+  async storeData(data: any) {
+    const encryptedData = this.isProduction ? this.encryptData(data) : JSON.stringify(data);
+    await this.db.table('users').add({ encryptedData });
+  }
+
+  /**
+   * Retrieves data
+   * @returns
+   */
+  async retrieveData() {
+    const storedData = await this.db.table('users').toArray();
+    const decryptedData = storedData.map(item => this.isProduction ? this.decryptData(item.encryptedData) : JSON.parse(item.encryptedData));
+    return decryptedData;
+  }
+
 
 
 }

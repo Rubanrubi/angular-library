@@ -27,8 +27,10 @@ export class AppComponent {
       name: 'Ruban Rubi',
       email: 'ruban@mailinator.com'
     };
-    await this.dexieService.addUser(user);
+    await this.dexieService.storeData(user);
     console.log('User added successfully.');
+    const data = await this.dexieService.retrieveData();
+    console.log('get data successfully', data);
   }
 
   /**
