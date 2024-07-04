@@ -1,0 +1,50 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center" class="cropp-container">
+	<h2>CROP PHOTO</h2>
+	<div class="buttons-group">
+		<label for="photoUpload">
+      <input
+        #photoUpload
+        style="display:none;"
+        type="file"
+        id="photoUpload"
+        accept=".png, .jpg, .jpeg"
+        (change)="upload($event)"
+      />
+      <button class="button--dark" (click)="photoUpload.click()">UPLOAD</button>
+    </label>
+		 <button class="button--light" (click)="crop()">CROP</button>
+		<button class="button--white" (click)="clear()">CLEAR</button>
+		<button class="button--red" (click)="reset()">RESET</button>
+	</div>
+
+	<angular-cropper #angularCropper [cropperOptions]="cropperOptions" (export)="cl($event)"></angular-cropper>
+
+	<div class="buttons-group">
+		<button class="rotate" (click)="rotate(90)">
+      <img class="icon" src="assets/images/rotate.svg" alt="">
+      90&deg;
+    </button>
+		<button class="zoom" (click)="zoom(true)">
+      <img class="icon" src="assets/images/zoom-in.svg" alt="">
+    </button>
+		<button class="zoom" (click)="zoom(false)">
+      <img class="icon" src="assets/images/zoom-out.svg" alt="">
+    </button>
+		<button class="zoom" (click)="scaleX()">
+      <img class="icon" src="assets/images/flip-horizontal.svg" alt="">
+    </button>
+		<button class="zoom" (click)="scaleY()">
+      <img class="icon" src="assets/images/flip-vertical.svg" alt="">
+    </button>
+		<button class="arrow" (click)="move(0, -10)">&uarr;</button>
+		<button class="arrow" (click)="move(0, 10)">&darr;</button>
+		<button class="arrow" (click)="move(-10, 0)">&larr;</button>
+		<button class="arrow" (click)="move(10, 0)">&rarr;</button>
+	</div>
+</div>
+
+
+<!-- <div class="cropped-container" *ngIf="!!croppedImage"> -->
+	<img [src]="croppedImage" alt="">
+<!-- </div> -->
