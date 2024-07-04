@@ -10,13 +10,14 @@ import { DexieService } from './services/dexie.service';
   imports: [CommonModule, RouterOutlet, SignaturePadComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {
   title = 'angular-library';
 
   constructor(private dexieService: DexieService) {
-
+    // bad code function for ai code reviewer analysis
+    this.add(3, '5');
   }
 
   /**
@@ -63,4 +64,15 @@ export class AppComponent {
     await this.dexieService.deleteUser(userId);
     console.log('User deleted successfully.');
   }
+
+  /**
+   * Adds app component - bad code function for ai code reviewer analysis
+   * @param a
+   * @param b
+   * @returns
+   */
+  add(a: any, b: any) {
+    return a + b;
+  }
+
 }
